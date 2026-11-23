@@ -494,7 +494,7 @@ ul {
 }
 .hero__inner {
   width: 100%;
-  max-width: var(--content-max);
+  max-width: calc(var(--content-max) + 2 * var(--gutter));
   margin: 0 auto;
   padding: 140px var(--gutter) 96px;
   display: grid;

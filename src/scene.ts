@@ -132,8 +132,8 @@ export class HeroScene {
       );
     const p = PALETTES[theme];
     this.addSatellite(mk(new THREE.TorusGeometry(0.42, 0.16, 32, 96), p.torus), 2.5, 0.55, 0.16, 0.3, 0.35);
-    this.addSatellite(mk(new THREE.CapsuleGeometry(0.17, 0.6, 12, 32), p.capsule, 0.3), 2.5, -0.7, 0.22, 2.4, 0.5);
-    this.addSatellite(mk(new THREE.SphereGeometry(0.26, 48, 32), p.sphereA), 2.35, 0.25, -0.19, 4.2, 0.25);
+    this.addSatellite(mk(new THREE.CapsuleGeometry(0.17, 0.6, 12, 32), p.capsule, 0.3), 2.3, -0.7, 0.22, 2.4, 0.5);
+    this.addSatellite(mk(new THREE.SphereGeometry(0.26, 48, 32), p.sphereA), 2.2, 0.25, -0.19, 4.2, 0.25);
     this.addSatellite(mk(new THREE.SphereGeometry(0.14, 32, 24), p.sphereB), 2.8, -0.35, 0.28, 1.1, 0.6);
 
     this.scene.add(this.group);
@@ -217,7 +217,7 @@ export class HeroScene {
     this.camera.updateProjectionMatrix();
     // Place the sculpture on the right on wide layouts, centred on narrow ones.
     const wide = w > 920;
-    this.group.position.x = wide ? Math.min(3.2, (w / h) * 1.55) : 0.5;
+    this.group.position.x = wide ? Math.min(3.4, (w / h) * 1.7) : 0.5;
     this.group.position.y = wide ? 0.1 : 1.3;
     const scale = wide ? Math.min(1, Math.max(0.8, (w / h) * 0.55)) : Math.max(0.65, Math.min(0.9, w / 700));
     this.group.scale.setScalar(scale);
