@@ -1009,10 +1009,56 @@ ul {
 .edu__item .title-md {
   line-height: 1.35;
 }
+/* Recognition */
+.recognition {
+  margin-top: 16px;
+  display: grid;
+  gap: 16px;
+}
+.award {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  padding: 26px 28px;
+  border-radius: var(--shape-xl);
+  background: var(--tertiary-container);
+  color: var(--on-tertiary-container);
+  transition: transform var(--dur-medium) var(--ease-emphasized), box-shadow var(--dur-medium) var(--ease-emphasized);
+}
+.award:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgb(var(--shadow) / 0.1);
+}
+.award__icon {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: var(--tertiary);
+  color: var(--on-tertiary);
+}
+.award__icon .icon {
+  font-size: 28px;
+}
+.award__kicker {
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+.award__body p {
+  margin-top: 6px;
+  opacity: 0.9;
+  max-width: 760px;
+}
 @media (max-width: 920px) {
   .skills,
   .edu {
     grid-template-columns: 1fr;
+  }
+  .award {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 

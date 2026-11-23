@@ -1,6 +1,6 @@
 import './style.css';
 import { HeroScene, type Theme } from './scene';
-import { about, education, experience, profile, projects, skills } from './content';
+import { about, education, experience, profile, projects, recognition, skills } from './content';
 import { applyTheme, getInitialTheme, initCardGlow, initNav, initReveal, initRipples } from './interactions';
 
 const icon = (name: string, filled = false) =>
@@ -191,6 +191,21 @@ function render() {
                 <div class="title-md">${esc(e.title)}</div>
                 <div class="body-md muted">${esc(e.org)}</div>
                 <div class="mono muted" style="margin-top:6px">${esc(e.period)}</div>
+              </div>
+            </div>`,
+            )
+            .join('')}
+        </div>
+        <div class="recognition">
+          ${recognition
+            .map(
+              (r) => `
+            <div class="award reveal">
+              <div class="award__icon">${icon(r.icon, true)}</div>
+              <div class="award__body">
+                <div class="label-md award__kicker">Recognition · ${esc(r.org)}</div>
+                <h3 class="title-lg">${esc(r.title)}</h3>
+                <p class="body-md">${esc(r.description)}</p>
               </div>
             </div>`,
             )

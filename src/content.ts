@@ -183,3 +183,13 @@ export const education = [
     icon: 'verified',
   },
 ];
+
+export const recognition = [
+  {
+    title: 'Peer Excellence Recognition',
+    org: 'Google Cloud',
+    description:
+      'Awarded for leading event operations, registration pipelines, and technical demo logistics for an enterprise Cloud summit engaging 300+ stakeholders.',
+    icon: 'emoji_events',
+  },
+];
