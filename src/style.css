@@ -961,6 +961,10 @@ ul {
 .skill-group:hover {
   background: var(--surface-container-high);
 }
+.skill-group .chips {
+  margin-top: 0;
+  padding-top: 0;
+}
 .skill-group__head {
   display: flex;
   align-items: center;
