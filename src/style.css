@@ -54,6 +54,10 @@
   --outline-variant: #c6c5d0;
   --inverse-surface: #303036;
   --inverse-on-surface: #f2f0f7;
+  --success: #1f6b3a;
+  --on-success: #ffffff;
+  --success-container: #d6f3dc;
+  --on-success-container: #06210f;
   --shadow: 27 27 33;
   --scrim: #000000;
 
@@ -88,6 +92,10 @@
   --outline-variant: #45464f;
   --inverse-surface: #e4e1e9;
   --inverse-on-surface: #303036;
+  --success: #8fd6a2;
+  --on-success: #003917;
+  --success-container: #1f4a2d;
+  --on-success-container: #c8f0d1;
   --shadow: 0 0 0;
 
   color-scheme: dark;
@@ -1011,7 +1019,7 @@ ul {
 }
 /* Recognition */
 .recognition {
-  margin-top: 16px;
+  margin-top: 40px;
   display: grid;
   gap: 16px;
 }
@@ -1021,8 +1029,8 @@ ul {
   align-items: center;
   padding: 26px 28px;
   border-radius: var(--shape-xl);
-  background: var(--tertiary-container);
-  color: var(--on-tertiary-container);
+  background: var(--success-container);
+  color: var(--on-success-container);
   transition: transform var(--dur-medium) var(--ease-emphasized), box-shadow var(--dur-medium) var(--ease-emphasized);
 }
 .award:hover {
@@ -1036,8 +1044,8 @@ ul {
   border-radius: 18px;
   display: grid;
   place-items: center;
-  background: var(--tertiary);
-  color: var(--on-tertiary);
+  background: var(--success);
+  color: var(--on-success);
 }
 .award__icon .icon {
   font-size: 28px;
