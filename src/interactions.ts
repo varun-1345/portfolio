@@ -43,48 +43,85 @@ export function initReveal() {
 export function initNav() {
   const topbar = document.querySelector<HTMLElement>('.topbar')!;
   const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.nav a'));
-  const sections = links
+  const home = links.find((a) => a.getAttribute('href') === '#top');
+  const sectionLinks = links.filter((a) => a !== home);
+  const sections = sectionLinks
     .map((a) => document.querySelector<HTMLElement>(a.getAttribute('href')!))
     .filter((s): s is HTMLElement => !!s);
+  const setActive = (href: string) =>
+    links.forEach((a) => a.classList.toggle('is-active', a.getAttribute('href') === href));
 
-  const onScroll = () => topbar.classList.toggle('topbar--scrolled', window.scrollY > 24);
+  const onScroll = () => {
+    topbar.classList.toggle('topbar--scrolled', window.scrollY > 24);
+    if (window.scrollY < window.innerHeight * 0.5) setActive('#top');
+  };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
   const io = new IntersectionObserver(
     (entries) => {
       for (const en of entries) {
-        if (!en.isIntersecting) continue;
-        const id = `#${en.target.id}`;
-        links.forEach((a) => a.classList.toggle('is-active', a.getAttribute('href') === id));
+        if (en.isIntersecting && window.scrollY >= window.innerHeight * 0.5) setActive(`#${en.target.id}`);
       }
     },
-    { rootMargin: '-45% 0px -50% 0px', threshold: 0 },
+    { rootMargin: '-40% 0px -55% 0px', threshold: 0 },
   );
   sections.forEach((s) => io.observe(s));
+  // "About" and "Skills" have no nav item; keep Work/Experience highlighted sensibly.
+  const about = document.getElementById('about');
+  if (about) io.observe(about);
 }
 
-/** Track pointer within cards to drive the accent wash. */
-export function initCardGlow() {
-  document.querySelectorAll<HTMLElement>('.card').forEach((card) => {
-    card.addEventListener('pointermove', (e) => {
-      const r = card.getBoundingClientRect();
-      card.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
-      card.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
-    });
-  });
-}
+/** Theme persistence: 'light' | 'dark' | 'system'. */
+export type ThemePref = 'light' | 'dark' | 'system';
 
-/** Theme persistence + toggle. */
-export function getInitialTheme(): Theme {
+const mq = window.matchMedia('(prefers-color-scheme: dark)');
+
+export function getThemePref(): ThemePref {
   const saved = localStorage.getItem('theme');
-  if (saved === 'dark' || saved === 'light') return saved;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  return saved === 'dark' || saved === 'light' ? saved : 'system';
 }
 
-export function applyTheme(theme: Theme) {
+export function resolveTheme(pref: ThemePref): Theme {
+  return pref === 'system' ? (mq.matches ? 'dark' : 'light') : pref;
+}
+
+export function applyThemePref(pref: ThemePref): Theme {
+  const theme = resolveTheme(pref);
   document.documentElement.dataset.theme = theme;
-  localStorage.setItem('theme', theme);
-  const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]:not([media])');
-  if (meta) meta.content = theme === 'dark' ? '#131318' : '#fbf8ff';
+  if (pref === 'system') localStorage.removeItem('theme');
+  else localStorage.setItem('theme', pref);
+  return theme;
+}
+
+export function onSystemThemeChange(cb: () => void) {
+  mq.addEventListener('change', cb);
+}
+
+/** Hover tooltips for elements with data-tip. */
+export function initTooltips() {
+  const tip = document.createElement('div');
+  tip.className = 'tooltip';
+  tip.setAttribute('role', 'tooltip');
+  document.body.appendChild(tip);
+  let current: HTMLElement | null = null;
+  const show = (el: HTMLElement) => {
+    current = el;
+    tip.textContent = el.dataset.tip ?? '';
+    const r = el.getBoundingClientRect();
+    tip.style.left = `${r.left + r.width / 2}px`;
+    tip.style.top = `${r.top - 10}px`;
+    tip.classList.add('is-visible');
+  };
+  const hide = () => {
+    current = null;
+    tip.classList.remove('is-visible');
+  };
+  document.querySelectorAll<HTMLElement>('[data-tip]').forEach((el) => {
+    el.addEventListener('pointerenter', () => show(el));
+    el.addEventListener('focus', () => show(el));
+    el.addEventListener('pointerleave', hide);
+    el.addEventListener('blur', hide);
+  });
+  window.addEventListener('scroll', () => current && hide(), { passive: true });
 }

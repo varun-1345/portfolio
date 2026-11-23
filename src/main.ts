@@ -1,7 +1,16 @@
 import './style.css';
-import { HeroScene, type Theme } from './scene';
+import { CharacterScene, type Theme } from './scene';
 import { about, education, experience, profile, projects, recognition, skills } from './content';
-import { applyTheme, getInitialTheme, initCardGlow, initNav, initReveal, initRipples } from './interactions';
+import {
+  applyThemePref,
+  getThemePref,
+  initNav,
+  initReveal,
+  initRipples,
+  initTooltips,
+  onSystemThemeChange,
+  type ThemePref,
+} from './interactions';
 
 const icon = (name: string, filled = false) =>
   `<span class="icon${filled ? ' icon--filled' : ''}" aria-hidden="true">${name}</span>`;
@@ -9,60 +18,53 @@ const icon = (name: string, filled = false) =>
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
+const linkedinSvg = `<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>`;
+
 function render() {
   const app = document.getElementById('app')!;
-  const spans = ['card--span-7', 'card--span-5', 'card--span-5', 'card--span-7'];
-
   app.innerHTML = `
   <header class="topbar">
-    <div class="topbar__inner">
-      <a class="brand" href="#top" aria-label="${esc(profile.name)} — home">
-        <span class="brand__mark">V</span>
-        <span>${esc(profile.shortName)}</span>
-      </a>
-      <nav class="nav" aria-label="Primary">
-        <a href="#about" data-ripple>About</a>
-        <a href="#projects" data-ripple>Projects</a>
-        <a href="#experience" data-ripple>Experience</a>
-        <a href="#skills" data-ripple>Skills</a>
-        <a href="#contact" data-ripple>Contact</a>
-      </nav>
-      <button class="icon-btn" id="theme-toggle" data-ripple aria-label="Toggle dark mode" title="Toggle theme">
-        ${icon('dark_mode')}
-      </button>
-    </div>
+    <a class="brand" href="#top" aria-label="${esc(profile.name)} — home">Varun<span class="brand__dot">.</span></a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#top" class="is-active" data-ripple>Home</a>
+      <a href="#projects" data-ripple>Work</a>
+      <a href="#experience" data-ripple>Experience</a>
+      <a href="#contact" data-ripple>Contact</a>
+    </nav>
+    <a class="btn btn--tonal btn--sm topbar__cta" href="mailto:${esc(profile.email)}" data-ripple>Get in touch</a>
   </header>
 
   <main id="top">
     <section class="hero" aria-label="Introduction">
       <div class="hero__glow"></div>
       <div class="hero__canvas" id="hero-canvas" aria-hidden="true"></div>
-      <div class="hero__inner">
-        <div class="hero__copy">
-          <div class="eyebrow label-lg reveal">
-            <span class="eyebrow__dot">${icon('location_on', true)}</span>
-            ${esc(profile.role)} · ${esc(profile.location)}
-          </div>
-          <h1 class="display-lg reveal" style="--delay:80ms">
-            Hi, I’m <span class="accent">Varun</span>.<br />
-            ${esc(profile.headline)}
-          </h1>
-          <p class="hero__lead body-lg reveal" style="--delay:160ms">${esc(profile.tagline)}</p>
-          <div class="hero__actions reveal" style="--delay:240ms">
-            <a class="btn btn--filled" href="#projects" data-ripple>${icon('arrow_downward')} See my work</a>
-            <a class="btn btn--tonal" href="mailto:${esc(profile.email)}" data-ripple>${icon('mail')} Get in touch</a>
-            <a class="btn btn--text" href="${esc(profile.resume)}" target="_blank" rel="noopener" data-ripple>${icon('description')} Resume</a>
-          </div>
-          <div class="hero__meta label-lg reveal" style="--delay:320ms">
-            <span>${icon('workspace_premium')} Google PM Certified</span>
-            <span>${icon('cloud')} Google Cloud S&amp;O</span>
-            <span>${icon('bolt')} 0→1 builder</span>
-          </div>
+
+      <div class="hero__side hero__side--left">
+        <div class="availability reveal"><span class="availability__dot"></span>Available for work</div>
+        <p class="hero__tagline reveal" style="--delay:80ms">
+          Project / Program Manager with<br />
+          ~2 years across Google Cloud &amp; enterprise IT,<br />
+          <span class="muted">turning messy operations<br />into systems that ship.</span>
+        </p>
+        <div class="theme-switch reveal" style="--delay:160ms" role="radiogroup" aria-label="Theme">
+          <button type="button" data-theme-pref="light" data-tip="Light" aria-label="Light theme">${icon('light_mode')}</button>
+          <button type="button" data-theme-pref="dark" data-tip="Dark" aria-label="Dark theme">${icon('dark_mode')}</button>
+          <button type="button" data-theme-pref="system" data-tip="System" aria-label="System theme">${icon('desktop_windows')}</button>
         </div>
       </div>
-      <div class="scroll-cue" aria-hidden="true">
-        <span>Scroll</span>
-        ${icon('keyboard_arrow_down')}
+
+      <div class="hero__side hero__side--right">
+        <div class="socials reveal">
+          <a href="${esc(profile.linkedin)}" target="_blank" rel="noopener" data-tip="LinkedIn · varunnampally" aria-label="LinkedIn">${linkedinSvg}</a>
+          <a href="mailto:${esc(profile.email)}" data-tip="${esc(profile.email)}" aria-label="Email">${icon('mail')}</a>
+          <a href="${esc(profile.resume)}" target="_blank" rel="noopener" data-tip="Resume (Drive)" aria-label="Resume">${icon('description')}</a>
+          <a href="#about" data-tip="Hyderabad, India" aria-label="Location">${icon('location_on')}</a>
+        </div>
+        <nav class="hero__links reveal" style="--delay:80ms" aria-label="Sections">
+          <a href="#about" data-ripple>About</a>
+          <a href="#projects" data-ripple>Work</a>
+          <a href="#contact" data-ripple>Contact</a>
+        </nav>
       </div>
     </section>
 
@@ -93,33 +95,25 @@ function render() {
       </div>
     </section>
 
-    <section class="section section--tinted" id="projects">
+    <section class="section" id="projects">
       <div class="section__inner">
         <div class="section__head">
           <div class="reveal">
             <div class="section__label label-md">Selected work</div>
             <h2 class="display-sm">Programs I’ve owned end to end.</h2>
           </div>
-          <p class="section__blurb body-lg reveal" style="--delay:80ms">
-            From governance over eight-figure budgets to internal tools that managers actually use, these are the
-            pieces of work I’m proudest of.
-          </p>
         </div>
         <div class="projects">
           ${projects
             .map(
               (p, i) => `
-            <article class="card card--${p.accent} ${spans[i % spans.length]} reveal" style="--delay:${(i % 2) * 90}ms" data-ripple>
-              <div class="card__top">
-                <div>
-                  <div class="card__kicker label-lg">${esc(p.kicker)}</div>
-                  <h3 class="title-lg">${esc(p.title)}</h3>
-                </div>
-                <div class="card__icon">${icon(p.icon, true)}</div>
-              </div>
+            <article class="card reveal" style="--delay:${(i % 2) * 90}ms">
+              <div class="card__index mono">0${i + 1}</div>
+              <div class="card__kicker label-lg">${esc(p.kicker)}</div>
+              <h3 class="title-lg">${esc(p.title)}</h3>
               <p class="card__desc body-md">${esc(p.description)}</p>
               <ul class="card__impact">
-                ${p.impact.map((b) => `<li>${icon('check_circle', true)}<span>${esc(b)}</span></li>`).join('')}
+                ${p.impact.map((b) => `<li>${icon('arrow_forward')}<span>${esc(b)}</span></li>`).join('')}
               </ul>
               <div class="chips">${p.tags.map((t) => `<span class="chip">${esc(t)}</span>`).join('')}</div>
             </article>`,
@@ -159,7 +153,7 @@ function render() {
       </div>
     </section>
 
-    <section class="section section--tinted" id="skills">
+    <section class="section" id="skills">
       <div class="section__inner">
         <div class="section__head">
           <div class="reveal">
@@ -172,11 +166,8 @@ function render() {
             .map(
               (g, i) => `
             <div class="skill-group reveal" style="--delay:${i * 80}ms">
-              <div class="skill-group__head">
-                ${icon(g.icon)}
-                <h3 class="title-md">${esc(g.group)}</h3>
-              </div>
-              <div class="chips">${g.items.map((s) => `<span class="chip chip--filled">${esc(s)}</span>`).join('')}</div>
+              <h3 class="title-md">${esc(g.group)}</h3>
+              <div class="chips">${g.items.map((s) => `<span class="chip">${esc(s)}</span>`).join('')}</div>
             </div>`,
             )
             .join('')}
@@ -186,7 +177,6 @@ function render() {
             .map(
               (e, i) => `
             <div class="edu__item reveal" style="--delay:${i * 80}ms">
-              ${icon(e.icon)}
               <div>
                 <div class="title-md">${esc(e.title)}</div>
                 <div class="body-md muted">${esc(e.org)}</div>
@@ -215,21 +205,13 @@ function render() {
     </section>
 
     <section class="section" id="contact">
-      <div class="section__inner">
-        <div class="contact reveal">
-          <div>
-            <div class="label-md" style="opacity:.8;margin-bottom:14px">Contact</div>
-            <h2 class="display-sm">Let’s build something that runs on time.</h2>
-            <p class="body-lg">
-              Open to program and project management roles, and always up for a conversation about operations,
-              internal tooling, or how to make a 500-person org feel small.
-            </p>
-          </div>
-          <div class="contact__actions">
-            <a class="btn btn--filled" href="mailto:${esc(profile.email)}" data-ripple>${icon('mail')} ${esc(profile.email)}</a>
-            <a class="btn btn--outlined" href="${esc(profile.linkedin)}" target="_blank" rel="noopener" data-ripple>${icon('group')} Connect on LinkedIn</a>
-            <a class="btn btn--outlined" href="${esc(profile.resume)}" target="_blank" rel="noopener" data-ripple>${icon('download')} View resume</a>
-          </div>
+      <div class="section__inner contact reveal">
+        <div class="section__label label-md">Contact</div>
+        <h2 class="display-lg">Let’s build something<br />that runs on time.</h2>
+        <a class="contact__email" href="mailto:${esc(profile.email)}">${esc(profile.email)} ${icon('arrow_outward')}</a>
+        <div class="contact__links">
+          <a href="${esc(profile.linkedin)}" target="_blank" rel="noopener">LinkedIn ${icon('arrow_outward')}</a>
+          <a href="${esc(profile.resume)}" target="_blank" rel="noopener">Resume ${icon('arrow_outward')}</a>
         </div>
       </div>
     </section>
@@ -238,12 +220,8 @@ function render() {
   <footer class="footer">
     <div class="footer__inner">
       <span>© ${new Date().getFullYear()} ${esc(profile.name)}</span>
-      <div class="footer__links">
-        <a href="${esc(profile.linkedin)}" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="mailto:${esc(profile.email)}">Email</a>
-        <a href="${esc(profile.resume)}" target="_blank" rel="noopener">Resume</a>
-        <a href="#top">Back to top ↑</a>
-      </div>
+      <span class="muted">Hyderabad, India</span>
+      <a href="#top">Back to top ↑</a>
     </div>
   </footer>`;
 }
@@ -251,44 +229,54 @@ function render() {
 function main() {
   render();
 
-  let theme: Theme = getInitialTheme();
-  applyTheme(theme);
+  let pref: ThemePref = getThemePref();
+  let theme: Theme = applyThemePref(pref);
 
   const canvasHost = document.getElementById('hero-canvas')!;
-  let scene: HeroScene | null = null;
+  let scene: CharacterScene | null = null;
   try {
-    scene = new HeroScene(canvasHost, theme);
+    scene = new CharacterScene(canvasHost, theme);
     scene.start();
   } catch (err) {
     console.warn('WebGL unavailable, falling back to static hero.', err);
     canvasHost.remove();
   }
 
-  const toggle = document.getElementById('theme-toggle')!;
-  const syncIcon = () => {
-    toggle.querySelector('.icon')!.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
-    toggle.setAttribute('aria-pressed', String(theme === 'dark'));
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-theme-pref]'));
+  const sync = () => {
+    buttons.forEach((b) => {
+      const on = b.dataset.themePref === pref;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-checked', String(on));
+      b.setAttribute('role', 'radio');
+    });
   };
-  syncIcon();
-  toggle.addEventListener('click', () => {
-    theme = theme === 'dark' ? 'light' : 'dark';
-    const swap = () => {
-      applyTheme(theme);
+  const apply = () => {
+    const next = applyThemePref(pref);
+    if (next !== theme) {
+      theme = next;
       scene?.setTheme(theme);
-      syncIcon();
-    };
-    const d = document as Document & { startViewTransition?: (cb: () => void) => void };
-    if (d.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      d.startViewTransition(swap);
-    } else {
-      swap();
     }
-  });
+    sync();
+  };
+  sync();
+  buttons.forEach((b) =>
+    b.addEventListener('click', () => {
+      pref = b.dataset.themePref as ThemePref;
+      const d = document as Document & { startViewTransition?: (cb: () => void) => void };
+      if (d.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        d.startViewTransition(apply);
+      } else {
+        apply();
+      }
+    }),
+  );
+  onSystemThemeChange(() => pref === 'system' && apply());
 
   initRipples();
   initReveal();
   initNav();
-  initCardGlow();
+  initTooltips();
 }
 
 main();
