@@ -7,10 +7,7 @@ export const profile = {
     'Program Manager with ~2 years across Google Cloud go-to-market operations and enterprise IT. I own governance for high-stakes programs, build 0→1 internal tools, and run the operating rhythm that keeps large teams moving.',
   location: 'Hyderabad, India',
   email: 'varunvarmanampally@gmail.com',
-  phone: '+91 86886 34838',
-  linkedin: 'https://www.linkedin.com/in/varunnampally',
-  github: 'https://github.com/varunnampally',
-  resume: '#',
+  linkedin: 'https://www.linkedin.com/in/varunnampally/',
 };
 
 export const about = {

@@ -213,7 +213,6 @@ function render() {
           <div class="contact__actions">
             <a class="btn btn--filled" href="mailto:${esc(profile.email)}" data-ripple>${icon('mail')} ${esc(profile.email)}</a>
             <a class="btn btn--outlined" href="${esc(profile.linkedin)}" target="_blank" rel="noopener" data-ripple>${icon('group')} Connect on LinkedIn</a>
-            <a class="btn btn--outlined" href="tel:${esc(profile.phone.replace(/\s/g, ''))}" data-ripple>${icon('call')} ${esc(profile.phone)}</a>
           </div>
         </div>
       </div>
