@@ -4,9 +4,9 @@ export const profile = {
   role: 'Project / Program Manager',
   headline: 'I turn messy operations into systems that ship.',
   tagline:
-    'Program Manager with ~2 years across Google Cloud go-to-market operations and enterprise IT. I own governance for high-stakes programs, build 0→1 internal tools, and run the operating rhythm that keeps large teams moving.',
+    'Project / Program Manager with ~2 years leading end-to-end Google Cloud go-to-market operations and enterprise IT initiatives. I own governance for high-stakes programs, build 0→1 internal tools, and run the operating cadences that keep large teams moving.',
   location: 'Hyderabad, India',
-  email: 'varunvarmanampally@gmail.com',
+  email: 'nampallyvarunvarma@gmail.com',
   linkedin: 'https://www.linkedin.com/in/varunnampally/',
   resume: 'https://drive.google.com/file/d/1VCLXU12tfEf8Y_y85kA-2AfYmn2-KZev/view',
 };
@@ -14,7 +14,7 @@ export const profile = {
 export const about = {
   paragraphs: [
     'I’m a Google Project Management Certified program manager who likes the parts of a project nobody else wants to touch: the reconciliation workflow with four stakeholders, the data that won’t flow through the standard connector, the recognition program that quietly stopped working.',
-    'Most recently at Google Cloud, I owned quarterly rebate governance for India’s largest strategic enterprise account and led delivery of an internal AI staffing tool from idea to adoption by ~20 managers, now on the FY27 roadmap.',
+    'Most recently at Google Cloud Strategy & Operations, I owned quarterly rebate governance for India’s largest enterprise account and led the 0→1 build of an AI staffing tool from MVP scope to adoption by ~20 managers, endorsed by the India Managing Director.',
     'I’m comfortable in both the spreadsheet and the terminal, and I care that the people around a project feel the cadence rather than fight it.',
   ],
   stats: [
@@ -40,10 +40,10 @@ export const projects: Project[] = [
     title: 'AI Staffing Tool',
     kicker: 'Google Cloud India · 0→1',
     description:
-      'A RAG-based internal tool that matches 40+ apprentices to projects using skill and performance data. Defined requirements and MVP scope, then built the data pipeline that pulled live evaluation data where the enterprise connector could not.',
+      'A RAG-based AI staffing tool that matches 40+ apprentices to projects using live skill and evaluation data. Defined the MVP scope and led the 0→1 build on Cloud Run, Python, and Apps Script.',
     impact: [
-      'Matching time cut from 2–3 business days to 1–2 hours',
-      'Adopted by ~20 Google Cloud India managers',
+      'Matching turnaround cut ~90%: 2–3 days to 1–2 hours',
+      'Adopted across ~20 Google Cloud India managers',
       'Endorsed by the India MD for the FY27 roadmap',
     ],
     tags: ['Cloud Run', 'Python', 'Apps Script', 'Vertex AI'],
@@ -54,20 +54,20 @@ export const projects: Project[] = [
     title: 'Rebate Governance',
     kicker: 'Strategic Enterprise Account',
     description:
-      'End-to-end quarterly rebate governance for Google Cloud India’s largest strategic enterprise account: $50M+ in annual rebate value across 9 billing accounts, reconciled with Finance and Order Management.',
+      'Quarterly rebate governance for Google Cloud India’s largest enterprise account: $50M+ annual value across 9 billing accounts, with workflows standardized across Finance and Order Management.',
     impact: [
-      '100% on-time disbursement across 4 consecutive cycles',
-      'Standardised the cross-functional reconciliation workflow',
+      '100% on-time execution over 4 consecutive cycles',
+      'Standardized cross-functional reconciliation workflows',
     ],
     tags: ['Program Governance', 'Finance Ops', 'Stakeholder Mgmt'],
     accent: 'secondary',
     icon: 'account_balance',
   },
   {
-    title: 'All-Hands Recognition Program',
+    title: 'All-Teams Recognition Program',
     kicker: 'Operating Rhythm · ~500 attendees',
     description:
-      'Ran the recognition program for six consecutive regional All-Hands and redesigned the nomination process so it actually reflected the work people were proud of.',
+      'Ran recognition programs for six regional All-Teams and redesigned the nomination workflows so they reflected the work people were proud of.',
     impact: ['Participation up 30%', 'Six consecutive cycles delivered'],
     tags: ['Operating Cadence', 'Process Design', 'Comms'],
     accent: 'tertiary',
@@ -77,8 +77,8 @@ export const projects: Project[] = [
     title: 'Startup Immersion Program',
     kicker: 'Market Access · 16 startups',
     description:
-      'Program-managed a market-access immersion for 16 startups, coordinating sessions, speakers, and logistics end to end.',
-    impact: ['16 startups onboarded', 'End-to-end logistics and speaker management'],
+      'Program-managed a market-access immersion program for 16 startups, owning end-to-end scheduling, speaker coordination, and stakeholder logistics.',
+    impact: ['16 startups onboarded', 'End-to-end scheduling, speakers, and stakeholder logistics'],
     tags: ['Program Management', 'Events', 'Ecosystem'],
     accent: 'primary',
     icon: 'rocket_launch',
@@ -97,15 +97,15 @@ export interface Experience {
 export const experience: Experience[] = [
   {
     company: 'Google',
-    role: 'PJM Apprentice',
+    role: 'Project Management Apprentice',
     team: 'Google Cloud Strategy & Operations',
     location: 'Gurgaon, India',
     period: 'Apr 2025 – Mar 2026',
     bullets: [
-      'Owned quarterly rebate governance for Google Cloud India’s largest strategic enterprise account ($50M+, 9 billing accounts) with 100% on-time disbursement across 4 cycles.',
-      'Led 0→1 delivery of an internal RAG-based staffing tool; ~90% faster project matching, adopted by ~20 managers, endorsed by the India MD for FY27.',
-      'Ran the recognition program for 6 regional All-Hands (~500 attendees), lifting participation 30%.',
-      'Program-managed a market-access immersion program for 16 startups end to end.',
+      'Commercial governance: owned quarterly rebate governance for Google Cloud India’s largest enterprise account ($50M+ annual value across 9 billing accounts), achieving 100% on-time execution over 4 consecutive cycles by standardizing workflows across Finance and Order Management.',
+      '0→1 product & technical delivery: defined MVP scope and led the build of a RAG-based AI staffing tool (Cloud Run, Python, Apps Script) integrating live evaluation data for 40+ apprentices; cut matching turnaround ~90% (2–3 days to 1–2 hours) and drove adoption across ~20 managers.',
+      'Cross-functional program execution: program-managed a market-access immersion program for 16 startups, owning end-to-end scheduling, speaker coordination, and stakeholder logistics.',
+      'Operating cadence: ran recognition programs for 6 regional All-Teams (~500 attendees), redesigning nomination workflows to boost participation by 30%.',
     ],
   },
   {
@@ -114,9 +114,9 @@ export const experience: Experience[] = [
     location: 'Hyderabad, India',
     period: 'Dec 2024 – Mar 2025',
     bullets: [
-      'Overhauled global tool provisioning and onboarding with APAC and EMEA PMs, establishing a 7-day onboarding standard.',
-      'Delivered 24/7 infrastructure support for 5+ global enterprise clients against a 98% uptime SLA.',
-      'Ran root-cause and trend analysis on recurring tickets, cutting repeat issues by 30%.',
+      'Process standardization: partnered with APAC and EMEA PMs to overhaul global tool provisioning and onboarding, establishing a 7-day standard and onboarding 5 engineers.',
+      'SLA governance: managed 24/7 infrastructure support for 5+ global enterprise clients, consistently maintaining a 98% uptime SLA.',
+      'Root-cause analysis: conducted trend analysis on recurring operational tickets, reducing repeat incidents by 30%.',
     ],
   },
   {
@@ -125,7 +125,7 @@ export const experience: Experience[] = [
     location: 'Hyderabad, India',
     period: 'Jun 2024 – Dec 2024',
     bullets: [
-      'Coordinated cross-functional hiring loops for 5 curriculum engineers, reducing time-to-hire by 20%.',
+      'Hiring operations: coordinated cross-functional hiring loops across Talent Acquisition and Curriculum for 5 curriculum engineers, cutting time-to-hire by 20%.',
       'Authored role rubrics and onboarding milestones for all five hires.',
     ],
   },
@@ -136,25 +136,30 @@ export const skills: { group: string; icon: string; items: string[] }[] = [
     group: 'Program Management',
     icon: 'account_tree',
     items: [
-      'Scope & schedule',
-      'Stakeholder management',
+      'End-to-end delivery',
+      'Scope & schedule management',
+      'Cross-functional stakeholder management',
+      'Executive stakeholder management',
       'Operating cadences',
-      'Business reviews',
       'SLA & risk tracking',
-      'Dependency management',
       'Process re-engineering',
       'Agile / Scrum',
     ],
   },
   {
-    group: 'Product & Analytics',
-    icon: 'insights',
-    items: ['Requirements definition', 'MVP scoping', 'KPI tracking', 'Google Sheets', 'SQL', 'Looker'],
-  },
-  {
-    group: 'Technical',
+    group: 'Product & Technical',
     icon: 'terminal',
-    items: ['Google Cloud Platform', 'Cloud Run', 'Vertex AI', 'Python', 'Apps Script', 'REST APIs', 'Git'],
+    items: [
+      'Requirements definition',
+      'KPI tracking',
+      'Google Cloud Platform',
+      'Cloud Run',
+      'Vertex AI',
+      'Python',
+      'Apps Script',
+      'Git',
+      'Google Sheets',
+    ],
   },
 ];
 
