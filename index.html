@@ -23,7 +23,12 @@
       (function () {
         try {
           var t = localStorage.getItem('theme');
-          if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
+          if (t === 'system') {
+            t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          } else if (t !== 'light') {
+            t = 'dark'; // default
+          }
+          document.documentElement.dataset.theme = t;
         } catch (e) {}
       })();
     </script>

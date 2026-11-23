@@ -79,7 +79,8 @@ const mq = window.matchMedia('(prefers-color-scheme: dark)');
 
 export function getThemePref(): ThemePref {
   const saved = localStorage.getItem('theme');
-  return saved === 'dark' || saved === 'light' ? saved : 'system';
+  if (saved === 'dark' || saved === 'light' || saved === 'system') return saved;
+  return 'dark'; // first visit defaults to dark
 }
 
 export function resolveTheme(pref: ThemePref): Theme {
@@ -89,8 +90,7 @@ export function resolveTheme(pref: ThemePref): Theme {
 export function applyThemePref(pref: ThemePref): Theme {
   const theme = resolveTheme(pref);
   document.documentElement.dataset.theme = theme;
-  if (pref === 'system') localStorage.removeItem('theme');
-  else localStorage.setItem('theme', pref);
+  localStorage.setItem('theme', pref);
   return theme;
 }
 
