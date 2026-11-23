@@ -92,10 +92,10 @@
   --outline-variant: #45464f;
   --inverse-surface: #e4e1e9;
   --inverse-on-surface: #303036;
-  --success: #8fd6a2;
-  --on-success: #003917;
-  --success-container: #1f4a2d;
-  --on-success-container: #c8f0d1;
+  --success: #14532d;
+  --on-success: #bdf2cc;
+  --success-container: #a7e3b8;
+  --on-success-container: #062d16;
   --shadow: 0 0 0;
 
   color-scheme: dark;
