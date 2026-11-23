@@ -51,7 +51,7 @@ function render() {
           <div class="hero__actions reveal" style="--delay:240ms">
             <a class="btn btn--filled" href="#projects" data-ripple>${icon('arrow_downward')} See my work</a>
             <a class="btn btn--tonal" href="mailto:${esc(profile.email)}" data-ripple>${icon('mail')} Get in touch</a>
-            <a class="btn btn--text" href="${esc(profile.linkedin)}" target="_blank" rel="noopener" data-ripple>LinkedIn ${icon('arrow_outward')}</a>
+            <a class="btn btn--text" href="${esc(profile.resume)}" target="_blank" rel="noopener" data-ripple>${icon('description')} Resume</a>
           </div>
           <div class="hero__meta label-lg reveal" style="--delay:320ms">
             <span>${icon('workspace_premium')} Google PM Certified</span>
@@ -213,6 +213,7 @@ function render() {
           <div class="contact__actions">
             <a class="btn btn--filled" href="mailto:${esc(profile.email)}" data-ripple>${icon('mail')} ${esc(profile.email)}</a>
             <a class="btn btn--outlined" href="${esc(profile.linkedin)}" target="_blank" rel="noopener" data-ripple>${icon('group')} Connect on LinkedIn</a>
+            <a class="btn btn--outlined" href="${esc(profile.resume)}" target="_blank" rel="noopener" data-ripple>${icon('download')} View resume</a>
           </div>
         </div>
       </div>
@@ -225,6 +226,7 @@ function render() {
       <div class="footer__links">
         <a href="${esc(profile.linkedin)}" target="_blank" rel="noopener">LinkedIn</a>
         <a href="mailto:${esc(profile.email)}">Email</a>
+        <a href="${esc(profile.resume)}" target="_blank" rel="noopener">Resume</a>
         <a href="#top">Back to top ↑</a>
       </div>
     </div>

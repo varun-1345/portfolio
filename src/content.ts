@@ -8,6 +8,7 @@ export const profile = {
   location: 'Hyderabad, India',
   email: 'varunvarmanampally@gmail.com',
   linkedin: 'https://www.linkedin.com/in/varunnampally/',
+  resume: 'https://drive.google.com/file/d/1VCLXU12tfEf8Y_y85kA-2AfYmn2-KZev/view',
 };
 
 export const about = {
