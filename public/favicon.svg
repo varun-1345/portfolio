@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b1b24"/>
+      <stop offset="1" stop-color="#0d0d13"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="60%" r="55%">
+      <stop offset="0" stop-color="#3451b2" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#3451b2" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6f4fb"/>
+      <stop offset="1" stop-color="#d9d9e6"/>
+    </linearGradient>
+    <clipPath id="r"><rect width="64" height="64" rx="16"/></clipPath>
+  </defs>
+  <g clip-path="url(#r)">
+    <rect width="64" height="64" fill="url(#g)"/>
+    <rect width="64" height="64" fill="url(#glow)"/>
+    <!-- shoulders -->
+    <path d="M6 70 C6 50 16 42 32 42 C48 42 58 50 58 70 Z" fill="url(#body)"/>
+    <!-- neck -->
+    <rect x="27.5" y="33" width="9" height="12" fill="#e4e2ee"/>
+    <!-- head -->
+    <ellipse cx="32" cy="25" rx="13" ry="14.5" fill="url(#body)"/>
+    <!-- eyes -->
+    <ellipse cx="27.5" cy="24" rx="1.9" ry="3" fill="#1b1b21"/>
+    <ellipse cx="36.5" cy="24" rx="1.9" ry="3" fill="#1b1b21"/>
+  </g>
+</svg>
