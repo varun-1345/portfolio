@@ -179,17 +179,15 @@ export function initRoad(sectionIds: { id: string; label: string }[]) {
     const moving = Math.abs(vCar) > 30 || Math.abs(dist) > 2;
 
     // ── Heading: rotate smoothly toward direction of travel (U-turn swing).
-    const wantHeading = Math.abs(dist) > 2 ? (dir > 0 ? 0 : 180) : heading > 90 ? 180 : 0;
-    const turnRate = 1 - Math.pow(0.0008, dt);
-    heading += (wantHeading - heading) * turnRate;
-    const turnFrac = Math.min(1, Math.abs(wantHeading - heading) / 180); // 0 when aligned
-    const swing = Math.sin(turnFrac * Math.PI) * 11; // lateral arc during the U-turn
+    // No intermediate angles: the car is always upright, facing down (0) or up (180).
+    // It only flips once it has braked to a stop, so the flip never happens mid-drive.
+    if (Math.abs(dist) > 2 && Math.abs(vCar) < 60) heading = dir > 0 ? 0 : 180;
+    const swing = 0;
 
     // ── Body squash/stretch from acceleration (reads as weight transfer).
-    const squashTarget = Math.max(-1, Math.min(1, (aCar * Math.sign(vCar || dir || 1)) / ACCEL));
-    squash += (squashTarget - squash) * (1 - Math.pow(0.001, dt));
-    const sy = 1 + squash * 0.07;
-    const sx = 1 - squash * 0.04;
+    squash = 0; // no squash/stretch — keep the body rigid
+    const sy = 1;
+    const sx = 1;
 
     // ── Idle: engine tremble + occasional exhaust puff.
     let jitterX = 0;
@@ -203,7 +201,7 @@ export function initRoad(sectionIds: { id: string; label: string }[]) {
       nextIdlePuff = 1.2 + Math.random() * 1.6;
     }
 
-    const bob = moving ? Math.sin(tAll * 40) * speed * 0.6 : 0;
+    const bob = 0;
     car.style.transform =
       `translate(-50%, -50%) translate(${swing + jitterX + bob}px, ${yCar + jitterY}px) ` +
       `rotate(${heading}deg) scale(${sx}, ${sy})`;
