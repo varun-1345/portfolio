@@ -139,7 +139,8 @@ export function initRoad(sectionIds: { id: string; label: string }[]) {
     const speed = Math.min(1, Math.abs(vel) * 1.4 + boost * 0.6);
 
     // Car transform: face direction of travel, tiny lean with speed.
-    const dir = vel < -0.002 ? 180 : 0;
+    // Headlights are at the top of the SVG: face down (180°) when travelling down, up (0°) when travelling up.
+    const dir = vel < -0.002 ? 0 : 180;
     car.style.transform = `translate(-50%, -50%) translateY(${y}px) rotate(${dir}deg) scale(${1 + speed * 0.08})`;
     car.classList.toggle('is-moving', speed > 0.05);
 
