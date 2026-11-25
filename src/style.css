@@ -823,7 +823,7 @@ ul {
   display: grid;
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
   gap: 48px;
-  align-items: start;
+  align-items: center;
 }
 .about__text p + p {
   margin-top: 18px;
