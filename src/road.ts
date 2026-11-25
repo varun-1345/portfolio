@@ -88,11 +88,20 @@ export function initRoad(sectionIds: { id: string; label: string }[]) {
   new ResizeObserver(layout).observe(document.body);
   window.addEventListener('resize', layout);
 
-  // Motion state
+  // Motion state (pixels along the road)
   let targetP = 0;
-  let p = 0;
-  let vel = 0;
-  let boost = 0;
+  let yCar = 0; // current position (px, page-space top offset)
+  let vCar = 0; // px/s, positive = down
+  let aCar = 0; // px/s² last frame
+  let heading = 0; // degrees: 0 faces down, 180 faces up
+  let squash = 0; // -1 (braking) .. +1 (accelerating), damped
+  let idleT = 0; // seconds parked
+  let nextIdlePuff = 1.2;
+  let initialised = false;
+  const MAX_V = 2600;
+  const ACCEL = 5200;
+  const BRAKE = 4600;
+
   interface Puff {
     x: number;
     y: number;
@@ -113,42 +122,106 @@ export function initRoad(sectionIds: { id: string; label: string }[]) {
   readScroll();
   window.addEventListener('scroll', readScroll, { passive: true });
 
-  // Navigation clicks (anchors) give the car a visible burst.
-  document.addEventListener('click', (e) => {
-    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');
-    if (a) boost = 1;
-  });
-
   const cx = road.clientWidth / 2;
   const smokeColor = () => getComputedStyle(road).getPropertyValue('--smoke').trim() || '150,150,160';
 
   let last = performance.now();
   let activeIdx = -1;
+  let tAll = 0;
   const frame = (now: number) => {
     const dt = Math.max(0, Math.min(0.05, (now - last) / 1000));
     last = now;
+    tAll += dt;
 
-    // Spring-ish follow: smooth but quick on long jumps.
-    const k = reduced ? 1 : 1 - Math.pow(0.0005, dt);
-    const prev = p;
-    p += (targetP - p) * k;
-    vel = (p - prev) / Math.max(dt, 0.001); // progress per second
-    boost = Math.max(0, boost - dt * 1.4);
+    const yTarget = top + targetP * length;
+    if (!initialised) {
+      yCar = yTarget;
+      initialised = true;
+    }
 
-    const y = top + p * length;
-    const speed = Math.min(1, Math.abs(vel) * 1.4 + boost * 0.6);
+    // ── Drive model: accelerate toward target, brake so we stop on it.
+    const dist = yTarget - yCar;
+    const dir = Math.sign(dist);
+    const stopDist = (vCar * vCar) / (2 * BRAKE);
+    let accel = 0;
+    if (reduced) {
+      yCar = yTarget;
+      vCar = 0;
+    } else if (Math.abs(dist) < 0.6 && Math.abs(vCar) < 40) {
+      // Parked.
+      yCar = yTarget;
+      vCar = 0;
+    } else if (Math.sign(vCar) !== 0 && Math.sign(vCar) !== dir) {
+      // Travelling the wrong way: brake first (this is the U-turn moment).
+      accel = -Math.sign(vCar) * BRAKE;
+    } else if (Math.abs(dist) <= stopDist * 1.02) {
+      // Close enough that we must brake to land on the marker.
+      accel = -dir * BRAKE;
+    } else {
+      accel = dir * ACCEL;
+    }
+    if (!reduced && vCar !== 0 || accel !== 0) {
+      const vPrev = vCar;
+      vCar = Math.max(-MAX_V, Math.min(MAX_V, vCar + accel * dt));
+      // Don't let braking push us past zero into reverse.
+      if (accel !== 0 && Math.sign(vPrev) !== 0 && Math.sign(vCar) !== Math.sign(vPrev) && Math.abs(dist) < 6) vCar = 0;
+      yCar += vCar * dt;
+      // Never overshoot by more than a hair; a tiny settle is handled by squash.
+      if ((dir > 0 && yCar > yTarget + 3) || (dir < 0 && yCar < yTarget - 3)) {
+        yCar = yTarget + dir * 3;
+        vCar *= -0.18; // soft rebound → little settle
+      }
+    }
+    aCar = accel;
 
-    // Car transform: face direction of travel, tiny lean with speed.
-    const dir = vel < -0.002 ? 180 : 0;
-    car.style.transform = `translate(-50%, -50%) translateY(${y}px) rotate(${dir}deg) scale(${1 + speed * 0.08})`;
-    car.classList.toggle('is-moving', speed > 0.05);
+    const p = Math.min(1, Math.max(0, (yCar - top) / length));
+    const speed = Math.min(1, Math.abs(vCar) / MAX_V);
+    const moving = Math.abs(vCar) > 30 || Math.abs(dist) > 2;
 
+    // ── Heading: rotate smoothly toward direction of travel (U-turn swing).
+    const wantHeading = Math.abs(dist) > 2 ? (dir > 0 ? 0 : 180) : heading > 90 ? 180 : 0;
+    const turnRate = 1 - Math.pow(0.0008, dt);
+    heading += (wantHeading - heading) * turnRate;
+    const turnFrac = Math.min(1, Math.abs(wantHeading - heading) / 180); // 0 when aligned
+    const swing = Math.sin(turnFrac * Math.PI) * 11; // lateral arc during the U-turn
+
+    // ── Body squash/stretch from acceleration (reads as weight transfer).
+    const squashTarget = Math.max(-1, Math.min(1, (aCar * Math.sign(vCar || dir || 1)) / ACCEL));
+    squash += (squashTarget - squash) * (1 - Math.pow(0.001, dt));
+    const sy = 1 + squash * 0.07;
+    const sx = 1 - squash * 0.04;
+
+    // ── Idle: engine tremble + occasional exhaust puff.
+    let jitterX = 0;
+    let jitterY = 0;
+    if (!moving && !reduced) {
+      idleT += dt;
+      jitterX = Math.sin(tAll * 95) * 0.35 + Math.sin(tAll * 61) * 0.2;
+      jitterY = Math.sin(tAll * 83) * 0.25;
+    } else {
+      idleT = 0;
+      nextIdlePuff = 1.2 + Math.random() * 1.6;
+    }
+
+    const bob = moving ? Math.sin(tAll * 40) * speed * 0.6 : 0;
+    car.style.transform =
+      `translate(-50%, -50%) translate(${swing + jitterX + bob}px, ${yCar + jitterY}px) ` +
+      `rotate(${heading}deg) scale(${sx}, ${sy})`;
+    car.classList.toggle('is-moving', moving);
+
+    const y = yCar;
     // Smoke: emitted from the tail (opposite to direction of travel).
     if (!reduced) {
-      const up = vel < 0;
+      const up = heading > 90;
       const tailY = y + (up ? -20 : 20);
-      // Emission rate scales with speed; a faint idle wisp when stopped.
-      emitAcc += dt * (speed > 0.03 ? 24 + speed * 170 : 1.5);
+      // Emission: throttle-heavy (accelerating smokes most), plus speed; idle gives periodic puffs.
+      const throttle = aCar * Math.sign(vCar || dir || 1) > 0 ? 1 : 0;
+      if (moving) {
+        emitAcc += dt * (14 + speed * 110 + throttle * 90);
+      } else if (idleT > nextIdlePuff) {
+        emitAcc += 3;
+        nextIdlePuff = idleT + 1.4 + Math.random() * 2.2;
+      }
       while (emitAcc >= 1 && puffs.length < maxPuffs) {
         emitAcc -= 1;
         const side = Math.random() < 0.5 ? -1 : 1;
