@@ -677,6 +677,7 @@ ul {
    ───────────────────────────────────────────────────────────── */
 :root {
   --trail: #3451b2;
+  --smoke: 110, 112, 128;
   --car-top: #4d68d6;
   --car-bottom: #2b45a3;
   --car-roof: #3a56c4;
@@ -686,6 +687,7 @@ ul {
 }
 :root[data-theme='dark'] {
   --trail: #b7c4ff;
+  --smoke: 205, 208, 225;
   --car-top: #c9d2ff;
   --car-bottom: #96a8f5;
   --car-roof: #b0bdff;
@@ -698,7 +700,7 @@ ul {
   top: 0;
   left: 0;
   bottom: 0;
-  width: 72px;
+  width: 96px;
   z-index: 40;
   pointer-events: none;
 }
@@ -754,7 +756,7 @@ ul {
   will-change: transform;
 }
 .road__car.is-moving {
-  filter: drop-shadow(0 2px 6px rgb(var(--shadow) / 0.35)) drop-shadow(0 0 10px color-mix(in srgb, var(--trail) 70%, transparent));
+  filter: drop-shadow(0 2px 8px rgb(var(--shadow) / 0.45));
 }
 .road__car svg {
   display: block;

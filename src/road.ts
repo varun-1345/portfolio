@@ -93,8 +93,18 @@ export function initRoad(sectionIds: { id: string; label: string }[]) {
   let p = 0;
   let vel = 0;
   let boost = 0;
-  const trail: { y: number; a: number; w: number }[] = [];
-  const maxTrail = 90;
+  interface Puff {
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    r: number;
+    life: number; // 1 → 0
+    decay: number;
+  }
+  const puffs: Puff[] = [];
+  const maxPuffs = 160;
+  let emitAcc = 0;
 
   const readScroll = () => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -110,12 +120,12 @@ export function initRoad(sectionIds: { id: string; label: string }[]) {
   });
 
   const cx = road.clientWidth / 2;
-  const carColor = () => getComputedStyle(road).getPropertyValue('--trail').trim() || '#3451b2';
+  const smokeColor = () => getComputedStyle(road).getPropertyValue('--smoke').trim() || '150,150,160';
 
   let last = performance.now();
   let activeIdx = -1;
   const frame = (now: number) => {
-    const dt = Math.min(0.05, (now - last) / 1000);
+    const dt = Math.max(0, Math.min(0.05, (now - last) / 1000));
     last = now;
 
     // Spring-ish follow: smooth but quick on long jumps.
@@ -133,38 +143,51 @@ export function initRoad(sectionIds: { id: string; label: string }[]) {
     car.style.transform = `translate(-50%, -50%) translateY(${y}px) rotate(${dir}deg) scale(${1 + speed * 0.08})`;
     car.classList.toggle('is-moving', speed > 0.05);
 
-    // Trail
+    // Smoke: emitted from the tail (opposite to direction of travel).
     if (!reduced) {
-      trail.unshift({ y, a: 0.1 + speed * 0.9, w: 2 + speed * 6 });
-      if (trail.length > maxTrail) trail.length = maxTrail;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const color = carColor();
-      ctx.lineCap = 'round';
-      for (let i = 1; i < trail.length; i++) {
-        const t0 = trail[i - 1];
-        const t1 = trail[i];
-        const fade = 1 - i / trail.length;
-        const alpha = t0.a * fade * fade;
-        if (alpha < 0.01) continue;
-        // glow pass
-        ctx.strokeStyle = color;
-        ctx.globalAlpha = alpha * 0.35;
-        ctx.lineWidth = t0.w * 2.2;
-        ctx.beginPath();
-        ctx.moveTo(cx, t0.y);
-        ctx.lineTo(cx, t1.y);
-        ctx.stroke();
-        // core pass
-        ctx.globalAlpha = alpha;
-        ctx.lineWidth = t0.w * 0.7;
-        ctx.beginPath();
-        ctx.moveTo(cx, t0.y);
-        ctx.lineTo(cx, t1.y);
-        ctx.stroke();
+      const up = vel < 0;
+      const tailY = y + (up ? -20 : 20);
+      // Emission rate scales with speed; a faint idle wisp when stopped.
+      emitAcc += dt * (speed > 0.03 ? 24 + speed * 170 : 1.5);
+      while (emitAcc >= 1 && puffs.length < maxPuffs) {
+        emitAcc -= 1;
+        const side = Math.random() < 0.5 ? -1 : 1;
+        puffs.push({
+          x: cx + side * 5 + (Math.random() - 0.5) * 3,
+          y: tailY + (Math.random() - 0.5) * 4,
+          vx: side * (6 + Math.random() * 10) + (Math.random() - 0.5) * 6,
+          vy: (up ? 1 : -1) * (10 + Math.random() * 20) * (0.4 + speed),
+          r: 2.5 + Math.random() * 2.5 + speed * 3,
+          life: 1,
+          decay: 0.9 + Math.random() * 0.6,
+        });
       }
-      ctx.globalAlpha = 1;
-      // Decay old samples even when stationary so the trail dies out.
-      for (const t of trail) t.a *= 0.97;
+      emitAcc = Math.max(0, Math.min(emitAcc, 3));
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const rgb = smokeColor();
+      for (let i = puffs.length - 1; i >= 0; i--) {
+        const q = puffs[i];
+        q.life -= dt * q.decay;
+        if (q.life <= 0) {
+          puffs.splice(i, 1);
+          continue;
+        }
+        q.x += q.vx * dt;
+        q.y += q.vy * dt;
+        q.vx *= 1 - dt * 1.2;
+        q.vy *= 1 - dt * 1.5;
+        q.r += dt * 14; // smoke expands as it cools
+        const a = Math.pow(q.life, 1.6) * 0.42;
+        const g = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, q.r);
+        g.addColorStop(0, `rgba(${rgb},${a})`);
+        g.addColorStop(0.6, `rgba(${rgb},${a * 0.45})`);
+        g.addColorStop(1, `rgba(${rgb},0)`);
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(q.x, q.y, q.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
 
     // Active marker
