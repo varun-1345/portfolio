@@ -672,6 +672,99 @@ ul {
   }
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Road + car scroll indicator (left edge)
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --trail: #3451b2;
+  --car-top: #4d68d6;
+  --car-bottom: #2b45a3;
+  --car-roof: #3a56c4;
+  --car-glass: #dce1ff;
+  --car-wheel: #1b1b21;
+  --car-tail: #ff6b6b;
+}
+:root[data-theme='dark'] {
+  --trail: #b7c4ff;
+  --car-top: #c9d2ff;
+  --car-bottom: #96a8f5;
+  --car-roof: #b0bdff;
+  --car-glass: #1f2340;
+  --car-wheel: #0d0e13;
+  --car-tail: #ff7b7b;
+}
+.road {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 72px;
+  z-index: 40;
+  pointer-events: none;
+}
+.road__trail {
+  position: absolute;
+  inset: 0;
+}
+.road__line {
+  position: absolute;
+  left: 50%;
+  top: 104px;
+  bottom: 56px;
+  width: 1px;
+  background: var(--outline-variant);
+  transform: translateX(-50%);
+}
+.road__line::before,
+.road__line::after {
+  /* dashed centre line */
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+.road__mark {
+  position: absolute;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--outline);
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  transition: background-color var(--dur-short), border-color var(--dur-short), transform var(--dur-medium) var(--ease-emphasized);
+}
+.road__mark:hover {
+  transform: translate(-50%, -50%) scale(1.4);
+  border-color: var(--primary);
+}
+.road__mark.is-active {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.road__car {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 24px;
+  height: 44px;
+  filter: drop-shadow(0 2px 6px rgb(var(--shadow) / 0.35));
+  transition: filter var(--dur-short);
+  will-change: transform;
+}
+.road__car.is-moving {
+  filter: drop-shadow(0 2px 6px rgb(var(--shadow) / 0.35)) drop-shadow(0 0 10px color-mix(in srgb, var(--trail) 70%, transparent));
+}
+.road__car svg {
+  display: block;
+}
+@media (max-width: 820px) {
+  .road {
+    display: none;
+  }
+}
+
 /* Tooltip */
 .tooltip {
   position: fixed;

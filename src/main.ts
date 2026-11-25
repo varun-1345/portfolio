@@ -1,5 +1,6 @@
 import './style.css';
 import { CharacterScene, type Theme } from './scene';
+import { initRoad } from './road';
 import { about, education, experience, profile, projects, recognition, skills } from './content';
 import {
   applyThemePref,
@@ -295,8 +296,18 @@ function main() {
   initRipples();
   initReveal();
   initNav();
-  initTooltips();
   initExpanders();
+  if (window.matchMedia('(min-width: 821px)').matches) {
+    initRoad([
+      { id: 'top', label: 'Home' },
+      { id: 'about', label: 'About' },
+      { id: 'projects', label: 'Work' },
+      { id: 'experience', label: 'Experience' },
+      { id: 'skills', label: 'Skills' },
+      { id: 'contact', label: 'Contact' },
+    ]);
+  }
+  initTooltips();
 }
 
 main();
