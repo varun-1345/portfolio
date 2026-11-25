@@ -72,6 +72,7 @@ export class CharacterScene {
   private ro: ResizeObserver;
   private targets = new Map<THREE.Color, THREE.Color>();
 
+  private compact = false;
   private nextBlink = 2.5;
   private blinkT = -1;
 
@@ -215,8 +216,8 @@ export class CharacterScene {
   };
 
   private onScroll = () => {
-    const h = this.container.clientHeight || window.innerHeight;
-    this.scroll = Math.min(1, Math.max(0, window.scrollY / h));
+    // Drift the figure down as the hero scrolls away (desktop only; the mobile stage band stays put).
+    this.scroll = this.compact ? 0 : Math.min(1, Math.max(0, window.scrollY / window.innerHeight));
   };
 
   private resize() {
@@ -227,8 +228,13 @@ export class CharacterScene {
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     // Keep the figure a sensible size on narrow screens.
-    const s = w < 720 ? 0.78 : Math.min(1, Math.max(0.85, (w / h) * 0.62));
+    // Figure width ≈ 4.1 units × (h / 6.16) px; cap at ~40% of the container width so the
+    // side columns always keep clear space. In the mobile stage band this yields 1.
+    const s = Math.min(1, Math.max(0.55, (0.56 * w) / h));
     this.figure.scale.setScalar(s);
+    // In a short stage band (mobile), bring the camera in so the head and shoulders fill it.
+    this.compact = h < 520;
+    this.camera.position.z = this.compact ? Math.max(6.2, 11.5 * (h / 900)) : 11.5;
     if (!this.running) this.render(0);
   }
 
@@ -299,8 +305,8 @@ export class CharacterScene {
 
     // Camera parallax.
     this.camera.position.x += (px * 0.2 - this.camera.position.x) * 0.05;
-    this.camera.position.y += (0.2 + py * 0.1 - this.camera.position.y) * 0.05;
-    this.camera.lookAt(0, 0.1, 0);
+    this.camera.position.y += ((this.compact ? 0.3 : 0.2) + py * 0.1 - this.camera.position.y) * 0.05;
+    this.camera.lookAt(0, this.compact ? 0.2 : 0.1, 0);
 
     for (const [c, target] of this.targets) if (!c.equals(target)) c.lerp(target, 0.1);
 
