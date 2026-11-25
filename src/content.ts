@@ -13,9 +13,7 @@ export const profile = {
 
 export const about = {
   paragraphs: [
-    'I’m a Google Project Management Certified program manager who likes the parts of a project nobody else wants to touch: the reconciliation workflow with four stakeholders, the data that won’t flow through the standard connector, the recognition program that quietly stopped working.',
-    'Most recently at Google Cloud Strategy & Operations, I owned quarterly rebate governance for India’s largest enterprise account and led the 0→1 build of an AI staffing tool from MVP scope to adoption by ~20 managers, endorsed by the India Managing Director.',
-    'I’m comfortable in both the spreadsheet and the terminal, and I care that the people around a project feel the cadence rather than fight it.',
+    'Google PM-certified program manager. Most recently at Google Cloud Strategy & Operations, where I owned $50M+ in rebate governance and took an AI staffing tool from idea to ~20 managers using it. I like the parts of a project nobody else wants to touch.',
   ],
   stats: [
     { value: '$50M+', label: 'Annual rebate value governed' },
@@ -28,6 +26,9 @@ export const about = {
 export interface Project {
   title: string;
   kicker: string;
+  metric: string;
+  metricLabel: string;
+  summary: string;
   description: string;
   impact: string[];
   tags: string[];
@@ -39,6 +40,9 @@ export const projects: Project[] = [
   {
     title: 'AI Staffing Tool',
     kicker: 'Google Cloud India · 0→1',
+    metric: '~90%',
+    metricLabel: 'faster project matching',
+    summary: 'RAG-based tool that matches 40+ apprentices to projects, built 0→1 on Cloud Run.',
     description:
       'A RAG-based AI staffing tool that matches 40+ apprentices to projects using live skill and evaluation data. Defined the MVP scope and led the 0→1 build on Cloud Run, Python, and Apps Script.',
     impact: [
@@ -53,6 +57,9 @@ export const projects: Project[] = [
   {
     title: 'Rebate Governance',
     kicker: 'Strategic Enterprise Account',
+    metric: '$50M+',
+    metricLabel: 'governed, 100% on time',
+    summary: 'Quarterly rebate governance for Google Cloud India’s largest enterprise account.',
     description:
       'Quarterly rebate governance for Google Cloud India’s largest enterprise account: $50M+ annual value across 9 billing accounts, with workflows standardized across Finance and Order Management.',
     impact: [
@@ -66,6 +73,9 @@ export const projects: Project[] = [
   {
     title: 'All-Teams Recognition Program',
     kicker: 'Operating Rhythm · ~500 attendees',
+    metric: '+30%',
+    metricLabel: 'participation',
+    summary: 'Redesigned nomination workflows across six regional All-Teams.',
     description:
       'Ran recognition programs for six regional All-Teams and redesigned the nomination workflows so they reflected the work people were proud of.',
     impact: ['Participation up 30%', 'Six consecutive cycles delivered'],
@@ -76,6 +86,9 @@ export const projects: Project[] = [
   {
     title: 'Startup Immersion Program',
     kicker: 'Market Access · 16 startups',
+    metric: '16',
+    metricLabel: 'startups, end to end',
+    summary: 'Owned scheduling, speakers, and stakeholder logistics for a market-access program.',
     description:
       'Program-managed a market-access immersion program for 16 startups, owning end-to-end scheduling, speaker coordination, and stakeholder logistics.',
     impact: ['16 startups onboarded', 'End-to-end scheduling, speakers, and stakeholder logistics'],
@@ -88,6 +101,7 @@ export const projects: Project[] = [
 export interface Experience {
   company: string;
   role: string;
+  summary: string;
   team?: string;
   location: string;
   period: string;
@@ -98,6 +112,7 @@ export const experience: Experience[] = [
   {
     company: 'Google',
     role: 'Project Management Apprentice',
+    summary: 'Rebate governance for the largest enterprise account, a 0→1 AI staffing tool, and the operating cadence for a 500-person org.',
     team: 'Google Cloud Strategy & Operations',
     location: 'Gurgaon, India',
     period: 'Apr 2025 – Mar 2026',
@@ -111,6 +126,7 @@ export const experience: Experience[] = [
   {
     company: 'Hitachi Vantara',
     role: 'Associate Technical Consultant',
+    summary: 'Global onboarding standard (7 days), 24/7 support for 5+ enterprise clients at 98% uptime, repeat incidents down 30%.',
     location: 'Hyderabad, India',
     period: 'Dec 2024 – Mar 2025',
     bullets: [
@@ -122,6 +138,7 @@ export const experience: Experience[] = [
   {
     company: 'NxtWave',
     role: 'Associate Project Manager (Intern)',
+    summary: 'Ran hiring loops for 5 curriculum engineers, cutting time-to-hire 20%.',
     location: 'Hyderabad, India',
     period: 'Jun 2024 – Dec 2024',
     bullets: [

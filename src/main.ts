@@ -7,6 +7,7 @@ import {
   initNav,
   initReveal,
   initRipples,
+  initExpanders,
   initTooltips,
   onSystemThemeChange,
   type ThemePref,
@@ -108,14 +109,28 @@ function render() {
             .map(
               (p, i) => `
             <article class="card reveal" style="--delay:${(i % 2) * 90}ms">
-              <div class="card__index mono">0${i + 1}</div>
-              <div class="card__kicker label-lg">${esc(p.kicker)}</div>
+              <div class="card__top">
+                <div class="card__kicker label-lg">${esc(p.kicker)}</div>
+                <div class="card__index mono">0${i + 1}</div>
+              </div>
+              <div class="metric">
+                <div class="metric__value">${esc(p.metric)}</div>
+                <div class="metric__label">${esc(p.metricLabel)}</div>
+              </div>
               <h3 class="title-lg">${esc(p.title)}</h3>
-              <p class="card__desc body-md">${esc(p.description)}</p>
-              <ul class="card__impact">
-                ${p.impact.map((b) => `<li>${icon('arrow_forward')}<span>${esc(b)}</span></li>`).join('')}
-              </ul>
-              <div class="chips">${p.tags.map((t) => `<span class="chip">${esc(t)}</span>`).join('')}</div>
+              <p class="card__summary body-md">${esc(p.summary)}</p>
+              <button class="expand-btn" type="button" aria-expanded="false" data-expand>
+                Details ${icon('expand_more')}
+              </button>
+              <div class="expand" data-expand-panel>
+                <div class="expand__inner">
+                  <p class="body-md muted">${esc(p.description)}</p>
+                  <ul class="card__impact">
+                    ${p.impact.map((b) => `<li>${icon('arrow_forward')}<span>${esc(b)}</span></li>`).join('')}
+                  </ul>
+                  <div class="chips">${p.tags.map((t) => `<span class="chip">${esc(t)}</span>`).join('')}</div>
+                </div>
+              </div>
             </article>`,
             )
             .join('')}
@@ -140,12 +155,19 @@ function render() {
               <div class="xp__meta">
                 <div class="period mono">${esc(x.period)}</div>
                 <div class="company">${esc(x.company)}</div>
-                <div class="role">${esc(x.role)} · ${esc(x.location)}</div>
-                ${x.team ? `<div class="team">${esc(x.team)}</div>` : ''}
+                <div class="role">${esc(x.role)}${x.team ? ` · ${esc(x.team)}` : ''}</div>
               </div>
-              <ul class="xp__bullets body-md">
-                ${x.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}
-              </ul>
+              <div class="xp__body">
+                <p class="body-md">${esc(x.summary)}</p>
+                <button class="expand-btn" type="button" aria-expanded="false" data-expand>
+                  More ${icon('expand_more')}
+                </button>
+                <div class="expand" data-expand-panel>
+                  <ul class="xp__bullets body-md expand__inner">
+                    ${x.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}
+                  </ul>
+                </div>
+              </div>
             </div>`,
             )
             .join('')}
@@ -161,31 +183,28 @@ function render() {
             <h2 class="display-sm">Spreadsheet, terminal, and the room in between.</h2>
           </div>
         </div>
-        <div class="skills">
+        <div class="skills reveal">
           ${skills
             .map(
-              (g, i) => `
-            <div class="skill-group reveal" style="--delay:${i * 80}ms">
-              <h3 class="title-md">${esc(g.group)}</h3>
+              (g) => `
+            <div class="skill-row">
+              <div class="skill-row__label label-md">${esc(g.group)}</div>
               <div class="chips">${g.items.map((s) => `<span class="chip">${esc(s)}</span>`).join('')}</div>
             </div>`,
             )
             .join('')}
         </div>
-        <div class="edu">
+        <ul class="edu reveal">
           ${education
             .map(
-              (e, i) => `
-            <div class="edu__item reveal" style="--delay:${i * 80}ms">
-              <div>
-                <div class="title-md">${esc(e.title)}</div>
-                <div class="body-md muted">${esc(e.org)}</div>
-                <div class="mono muted" style="margin-top:6px">${esc(e.period)}</div>
-              </div>
-            </div>`,
+              (e) => `
+            <li class="edu__item">
+              <span class="edu__title">${esc(e.title)}</span>
+              <span class="edu__meta muted">${esc(e.org)} · ${esc(e.period)}</span>
+            </li>`,
             )
             .join('')}
-        </div>
+        </ul>
         <div class="recognition">
           ${recognition
             .map(
@@ -277,6 +296,7 @@ function main() {
   initReveal();
   initNav();
   initTooltips();
+  initExpanders();
 }
 
 main();

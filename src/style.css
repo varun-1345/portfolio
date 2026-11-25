@@ -772,6 +772,7 @@ ul {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
+  align-items: start;
 }
 .card {
   position: relative;
@@ -787,15 +788,76 @@ ul {
   background: var(--surface-container);
   transform: translateY(-3px);
 }
+.card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
 .card__index {
   color: var(--outline);
-  margin-bottom: 8px;
+}
+.metric {
+  margin: 10px 0 6px;
+}
+.metric__value {
+  font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--primary);
+  font-variation-settings: 'opsz' 144;
+}
+.metric__label {
+  margin-top: 6px;
+  color: var(--on-surface-variant);
+  font-size: 0.9rem;
+}
+.card__summary {
+  color: var(--on-surface-variant);
+}
+.expand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 6px 10px 6px 12px;
+  border-radius: var(--shape-full);
+  color: var(--primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color var(--dur-short);
+}
+.expand-btn:hover {
+  background: var(--surface-container-high);
+}
+.expand-btn .icon {
+  font-size: 18px;
+  transition: transform var(--dur-medium) var(--ease-emphasized);
+}
+.expand-btn[aria-expanded='true'] .icon {
+  transform: rotate(180deg);
+}
+.expand {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-medium) var(--ease-emphasized);
+}
+.expand.is-open {
+  grid-template-rows: 1fr;
+}
+.expand__inner {
+  overflow: hidden;
+  display: grid;
+  gap: 12px;
+  min-height: 0;
+}
+.expand.is-open .expand__inner {
+  padding-top: 8px;
 }
 .card__kicker {
   color: var(--on-surface-variant);
-}
-.card h3 {
-  margin-top: -6px;
 }
 .card__desc {
   color: var(--on-surface-variant);
@@ -821,9 +883,6 @@ ul {
   flex-wrap: wrap;
   gap: 8px;
   padding-top: 10px;
-}
-.card .chips {
-  margin-top: auto;
 }
 .chip {
   display: inline-flex;
@@ -921,6 +980,11 @@ ul {
   font-size: 0.8rem;
   color: var(--on-surface-variant);
 }
+.xp__body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 .xp__bullets {
   display: grid;
   gap: 10px;
@@ -945,46 +1009,77 @@ ul {
   .xp {
     grid-template-columns: 24px 1fr;
   }
-  .xp__bullets {
+  .xp__body {
     grid-column: 2;
   }
 }
 
-/* Skills */
+/* Skills — compact rows */
 .skills {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 20px;
 }
-.skill-group {
-  padding: 26px;
-  border-radius: var(--shape-xl);
-  background: var(--surface-container-low);
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+.skill-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 16px 32px;
+  align-items: start;
+  padding: 20px 0;
+  border-top: 1px solid var(--outline-variant);
 }
-.skill-group .chips {
+.skill-row__label {
+  color: var(--on-surface-variant);
+  padding-top: 8px;
+}
+.skill-row .chips {
   padding-top: 0;
 }
 .edu {
-  margin-top: 16px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  margin-top: 8px;
+  border-top: 1px solid var(--outline-variant);
 }
 .edu__item {
-  padding: 22px;
-  border-radius: var(--shape-lg);
-  border: 1px solid var(--outline-variant);
-  transition: border-color var(--dur-short), background-color var(--dur-short);
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 4px 32px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--outline-variant);
+  font-size: 0.9375rem;
 }
-.edu__item:hover {
-  background: var(--surface-container-low);
-  border-color: transparent;
+.edu__title {
+  font-weight: 500;
+  grid-column: 2;
 }
-.edu__item .title-md {
-  line-height: 1.35;
+.edu__meta {
+  grid-column: 2;
+  font-size: 0.875rem;
+}
+.edu__item::before {
+  content: 'Education';
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  color: var(--on-surface-variant);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding-top: 3px;
+}
+.edu__item:nth-child(n + 2)::before {
+  content: 'Certification';
+}
+@media (max-width: 920px) {
+  .skill-row,
+  .edu__item {
+    grid-template-columns: 1fr;
+  }
+  .edu__title,
+  .edu__meta {
+    grid-column: 1;
+  }
+  .edu__item::before {
+    grid-row: auto;
+  }
 }
 
 /* Recognition */
@@ -1029,10 +1124,6 @@ ul {
   max-width: 760px;
 }
 @media (max-width: 920px) {
-  .skills,
-  .edu {
-    grid-template-columns: 1fr;
-  }
   .award {
     flex-direction: column;
     align-items: flex-start;

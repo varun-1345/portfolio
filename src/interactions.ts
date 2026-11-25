@@ -125,3 +125,16 @@ export function initTooltips() {
   });
   window.addEventListener('scroll', () => current && hide(), { passive: true });
 }
+
+/** Expand/collapse panels (M3 style) for [data-expand] buttons. */
+export function initExpanders() {
+  document.querySelectorAll<HTMLButtonElement>('[data-expand]').forEach((btn) => {
+    const panel = btn.nextElementSibling as HTMLElement | null;
+    if (!panel) return;
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      panel.classList.toggle('is-open', !open);
+    });
+  });
+}
