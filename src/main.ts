@@ -72,15 +72,11 @@ function render() {
 
     <section class="section" id="about">
       <div class="section__inner">
-        <div class="section__head">
-          <div class="reveal">
+        <div class="about">
+          <div class="about__text reveal">
             <div class="section__label label-md">About</div>
             <h2 class="display-sm">Calm in the middle of complex programs.</h2>
-          </div>
-        </div>
-        <div class="about">
-          <div class="about__text body-lg reveal">
-            ${about.paragraphs.map((p) => `<p>${esc(p)}</p>`).join('')}
+            ${about.paragraphs.map((p) => `<p class="body-lg">${esc(p)}</p>`).join('')}
           </div>
           <div class="stats">
             ${about.stats
