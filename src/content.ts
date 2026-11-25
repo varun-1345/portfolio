@@ -13,10 +13,10 @@ export const profile = {
 
 export const about = {
   paragraphs: [
-    'Google PM-certified program manager. Most recently at Google Cloud Strategy & Operations, where I owned $50M+ in rebate governance and took an AI staffing tool from idea to ~20 managers using it. I like the parts of a project nobody else wants to touch.',
+    'Google PM-certified program manager. Most recently at Google Cloud Strategy & Operations, where I owned rebate governance for an eight-figure enterprise account and took an AI staffing tool from idea to ~20 managers using it. I like the parts of a project nobody else wants to touch.',
   ],
   stats: [
-    { value: '$50M+', label: 'Annual rebate value governed' },
+    { value: '8-figure', label: 'Rebate program governed' },
     { value: '~90%', label: 'Faster project matching' },
     { value: '500', label: 'Person org operating rhythm' },
     { value: '0→1', label: 'Internal AI tool shipped' },
@@ -57,13 +57,13 @@ export const projects: Project[] = [
   {
     title: 'Rebate Governance',
     kicker: 'Strategic Enterprise Account',
-    metric: '$50M+',
-    metricLabel: 'governed, 100% on time',
+    metric: '100%',
+    metricLabel: 'on time, 4 consecutive cycles',
     summary: 'Quarterly rebate governance for Google Cloud India’s largest enterprise account.',
     description:
-      'Quarterly rebate governance for Google Cloud India’s largest enterprise account: $50M+ annual value across 9 billing accounts, with workflows standardized across Finance and Order Management.',
+      'Quarterly rebate governance for Google Cloud India’s largest enterprise account: multi-million-dollar annual value across multiple billing accounts, with workflows standardized across Finance and Order Management.',
     impact: [
-      '100% on-time execution over 4 consecutive cycles',
+      'Eight-figure annual rebate value, multiple billing accounts',
       'Standardized cross-functional reconciliation workflows',
     ],
     tags: ['Program Governance', 'Finance Ops', 'Stakeholder Mgmt'],
@@ -117,7 +117,7 @@ export const experience: Experience[] = [
     location: 'Gurgaon, India',
     period: 'Apr 2025 – Mar 2026',
     bullets: [
-      'Commercial governance: owned quarterly rebate governance for Google Cloud India’s largest enterprise account ($50M+ annual value across 9 billing accounts), achieving 100% on-time execution over 4 consecutive cycles by standardizing workflows across Finance and Order Management.',
+      'Commercial governance: owned quarterly rebate governance for Google Cloud India’s largest enterprise account (multi-million-dollar annual value across multiple billing accounts), achieving 100% on-time execution over 4 consecutive cycles by standardizing workflows across Finance and Order Management.',
       '0→1 product & technical delivery: defined MVP scope and led the build of a RAG-based AI staffing tool (Cloud Run, Python, Apps Script) integrating live evaluation data for 40+ apprentices; cut matching turnaround ~90% (2–3 days to 1–2 hours) and drove adoption across ~20 managers.',
       'Cross-functional program execution: program-managed a market-access immersion program for 16 startups, owning end-to-end scheduling, speaker coordination, and stakeholder logistics.',
       'Operating cadence: ran recognition programs for 6 regional All-Teams (~500 attendees), redesigning nomination workflows to boost participation by 30%.',
