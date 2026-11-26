@@ -1,10 +1,10 @@
 export const profile = {
   name: 'Varun Varma Nampally',
   shortName: 'Varun',
-  role: 'Project / Program Manager',
+  role: 'Project Manager',
   headline: 'I turn messy operations into systems that ship.',
   tagline:
-    'Project / Program Manager with ~2 years leading end-to-end Google Cloud go-to-market operations and enterprise IT initiatives. I own governance for high-stakes programs, build 0→1 internal tools, and run the operating cadences that keep large teams moving.',
+    'Project Manager with ~2 years leading end-to-end Google Cloud go-to-market operations and enterprise IT initiatives. I own governance for high-stakes programs, build 0→1 internal tools, and run the operating cadences that keep large teams moving.',
   location: 'Hyderabad, India',
   email: 'nampallyvarunvarma@gmail.com',
   linkedin: 'https://www.linkedin.com/in/varunnampally/',
@@ -13,7 +13,7 @@ export const profile = {
 
 export const about = {
   paragraphs: [
-    'Google PM-certified program manager. Most recently at Google Cloud Strategy & Operations, where I owned rebate governance for an eight-figure enterprise account and took an AI staffing tool from idea to ~20 managers using it. I like the parts of a project nobody else wants to touch.',
+    'Google-certified project manager. Most recently at Google Cloud Strategy & Operations, where I owned rebate governance for an eight-figure enterprise account and took an AI staffing tool from an idea to a tool ~20 managers use. I enjoy bringing structure to work that doesn’t have it yet.',
   ],
   stats: [
     { value: '8-figure', label: 'Rebate program governed' },

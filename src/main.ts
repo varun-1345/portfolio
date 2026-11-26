@@ -44,7 +44,7 @@ function render() {
       <div class="hero__side hero__side--left">
         <div class="availability reveal"><span class="availability__dot"></span>Available for work</div>
         <p class="hero__tagline reveal" style="--delay:80ms">
-          Project / Program Manager with<br />
+          Project Manager with<br />
           ~2 years across Google Cloud &amp; enterprise IT,<br />
           <span class="muted">turning messy operations<br />into systems that ship.</span>
         </p>
