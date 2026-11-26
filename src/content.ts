@@ -13,7 +13,7 @@ export const profile = {
 
 export const about = {
   paragraphs: [
-    'Google-certified project manager. Most recently at Google Cloud Strategy & Operations, where I owned rebate governance for an eight-figure enterprise account and took an AI staffing tool from an idea to a tool ~20 managers use. I enjoy bringing structure to work that doesn’t have it yet.',
+    'I’m a Google-certified project manager with about two years across Google Cloud and enterprise IT. Most recently, at Google Cloud Strategy & Operations, I owned rebate governance for an eight-figure enterprise account and took an AI staffing tool from an idea to something ~20 managers use every week. What ties the work together is a habit of bringing structure to processes that don’t have it yet — and making sure the people running them feel the difference. I’m now looking for a project management role where that habit can go to work at a larger scale.',
   ],
   stats: [
     { value: '8-figure', label: 'Rebate program governed' },
