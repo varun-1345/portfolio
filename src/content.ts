@@ -2,7 +2,7 @@ export const profile = {
   name: 'Varun Varma Nampally',
   shortName: 'Varun',
   role: 'Project Manager',
-  headline: 'I turn messy operations into systems that ship.',
+  headline: 'I turn complex operations into systems that ship.',
   tagline:
     'Project Manager with ~2 years leading end-to-end Google Cloud go-to-market operations and enterprise IT initiatives. I own governance for high-stakes programs, build 0→1 internal tools, and run the operating cadences that keep large teams moving.',
   location: 'Hyderabad, India',

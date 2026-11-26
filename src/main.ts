@@ -46,7 +46,7 @@ function render() {
         <p class="hero__tagline reveal" style="--delay:80ms">
           Project Manager with<br />
           ~2 years across Google Cloud &amp; enterprise IT,<br />
-          <span class="muted">turning messy operations<br />into systems that ship.</span>
+          <span class="muted">turning complex operations<br />into systems that ship.</span>
         </p>
         <div class="theme-switch reveal" style="--delay:160ms" role="radiogroup" aria-label="Theme">
           <button type="button" data-theme-pref="light" data-tip="Light" aria-label="Light theme">${icon('light_mode')}</button>
