@@ -13,7 +13,7 @@ export const profile = {
 
 export const about = {
   paragraphs: [
-    'I’m a Google-certified project manager with about two years across Google Cloud and enterprise IT. Most recently, at Google Cloud Strategy & Operations, I owned rebate governance for an eight-figure enterprise account and took an AI staffing tool from an idea to something ~20 managers use every week. What ties the work together is a habit of bringing structure to processes that don’t have it yet — and making sure the people running them feel the difference. I’m now looking for a project management role where that habit can go to work at a larger scale.',
+    'I’m a Google-certified project manager with 2 years of experience across Google Cloud and enterprise IT, where I’ve led initiatives ranging from eight-figure account governance to an AI staffing tool adopted by 20+ managers. I bring together operational thinking, data-driven problem-solving, and cross-functional collaboration to navigate ambiguity and turn complex challenges into actionable outcomes. I enjoy building structure where it’s needed, improving how things work, and taking ownership from idea to execution. I’m looking to bring this approach to larger programs with greater scope and impact.',
   ],
   stats: [
     { value: '8-figure', label: 'Rebate program governed' },
